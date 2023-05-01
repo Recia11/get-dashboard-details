@@ -88,8 +88,6 @@
 
 (defn convert-widgets [widgets alias-map]
   (mapcat #(convert-widget alias-map %) widgets)
-  ;; equivalent:
-  ;;(mapcat (partial convert-widget alias-map) widgets)
   )
 
 (defn -main [& args]
