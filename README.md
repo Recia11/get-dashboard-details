@@ -1,12 +1,12 @@
-Overview
+# Overview
 
 Fetches dashboard details through API and parses it for specific information
 
-Configuration
+# Configuration
 
 The configuration file config.json contains all of the configuration options and should be supplied to the script.
 
-Running
+# Running
 
 First, you must have java installed.
 
