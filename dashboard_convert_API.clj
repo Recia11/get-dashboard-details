@@ -20,27 +20,21 @@
 (defn get-auth-token
   [url params]
   (let [response (try-post url params)
-        {:keys [status body]} response
-        ]
+        {:keys [status body]} response]
     (case status
       200 (get (json/read-str body) "access_token")
-      (println "Non-200 Status"))
-    )
-  )
+      (println "Non-200 Status"))))
 
 ;takes in a sequence of dashboard ids and outputs a sequence of widgets lists
 (defn get-data
   [base-url ids token]
   (map #(let [response (client/get (str base-url % "/export/dash")
                               {:headers {:authorization (str "Bearer " token)}})
-         {:keys [status body]} response
-         ]
+         {:keys [status body]} response]
      (case status
        200 (get (json/read-str body) "widgets")
        ;should retry if get a non-200 error, after max retry - error message should be descriptive or in log
-       "Non-200 error")
-     ) ids)
-  )
+       "Non-200 error")) ids))
 
 ;using id-list from config file
 (def cli-options
@@ -87,8 +81,7 @@
           (get-in widget ["metadata" "panels"])))
 
 (defn convert-widgets [widgets alias-map]
-  (mapcat #(convert-widget alias-map %) widgets)
-  )
+  (mapcat #(convert-widget alias-map %) widgets))
 
 (defn -main [& args]
   (let [{:keys [options arguments errors summary]} (parse-opts args cli-options)
@@ -104,8 +97,7 @@
          (with-open [writer (io/writer (str id ".csv"))]
            (csv/write-csv writer
                           (convert-widgets widgets (create-alias-map-widgets widgets))))
-       widgets-seq ids)))
-  )
+       widgets-seq ids))))
 
 
 
